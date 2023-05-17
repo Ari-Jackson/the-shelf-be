@@ -34,10 +34,8 @@ bookRouter
   .get(async (req, res) => {
     const { id } = req.params;
     const { error, result } = await getOneBook(id);
-    if (error?.code === 0) {
+    if (error === 0) {
       res.status(404).json({ error: "bookmark not found" });
-    } else if (error) {
-      res.status(500).json({ Error: "server error" });
     } else {
       res.status(200).json(result);
     }

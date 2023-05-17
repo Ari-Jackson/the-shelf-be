@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodError, z } from "zod";
+import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 
 const bookSchema = z.object({
