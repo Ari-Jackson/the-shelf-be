@@ -3,14 +3,16 @@ import db from "../../db/dbConfig";
 import { type bookSchemaType } from "../validators/bookValidator.js";
 
 const getAllBooks = async (order?: ParsedQs[string]) => {
-  let baseQuery = "SELECT * FROM books";
+  let baseQuery = "SELECT * FROM books ";
   if (!!order) {
     if (order.toString().toLowerCase() === "desc") {
-      baseQuery += " ORDER BY name DESC";
+      baseQuery += "ORDER BY name DESC";
     }
     if (order.toString().toLowerCase() === "asc") {
-      baseQuery += " ORDER BY name ASC";
+      baseQuery += "ORDER BY name ASC";
     }
+  } else {
+    baseQuery += "ORDER BY id ASC";
   }
 
   try {
@@ -33,14 +35,14 @@ const getOneBook = async (id: string) => {
 const createOneBook = async (newBookInfo: bookSchemaType) => {
   try {
     const result = await db.any(
-      "INSERT INTO books(title, format, genre, pages, rating, theme) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;",
+      "INSERT INTO books(title, rating, genre, was_completed_before, is_current_read, is_favorite) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;",
       [
         newBookInfo.title,
-        newBookInfo.format,
-        newBookInfo.genre,
-        newBookInfo.pages,
         newBookInfo.rating,
-        newBookInfo.theme,
+        newBookInfo.genre,
+        newBookInfo.was_completed_before,
+        newBookInfo.is_current_read,
+        newBookInfo.is_favorite,
       ]
     );
     return { result };
@@ -52,14 +54,14 @@ const createOneBook = async (newBookInfo: bookSchemaType) => {
 const updateOneBook = async (id: string, newBookInfo: bookSchemaType) => {
   try {
     const result = await db.one(
-      "UPDATE books SET title=$1, format=$2, genre=$3, pages=$4, rating=$5, theme=$6 WHERE id=$7 RETURNING *;",
+      "UPDATE books SET title=$1, rating=$2, genre=$3, was_completed_before=$4, is_current_read=$5, is_favorite=$6 WHERE id=$7 RETURNING *;",
       [
         newBookInfo.title,
-        newBookInfo.format,
-        newBookInfo.genre,
-        newBookInfo.pages,
         newBookInfo.rating,
-        newBookInfo.theme,
+        newBookInfo.genre,
+        newBookInfo.was_completed_before,
+        newBookInfo.is_current_read,
+        newBookInfo.is_favorite,
         id,
       ]
     );

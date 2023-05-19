@@ -3,12 +3,12 @@ import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 
 const bookSchema = z.object({
-  title: z.string(),
-  format: z.string(),
-  genre: z.string(),
-  pages: z.number().positive(),
-  rating: z.number(),
-  theme: z.string(),
+  title: z.string().max(500),
+  genre: z.string().max(255),
+  rating: z.number().min(0).max(10),
+  is_favorite: z.boolean(),
+  is_current_read: z.boolean(),
+  was_completed_before: z.boolean(),
 });
 
 const booksValidator = (req: Request, res: Response, next: NextFunction) => {
@@ -17,7 +17,7 @@ const booksValidator = (req: Request, res: Response, next: NextFunction) => {
     return next();
   } catch (err: any) {
     const validationError = fromZodError(err);
-    return res.status(400).json(validationError);
+    return res.status(400).json(validationError.message);
   }
 };
 
