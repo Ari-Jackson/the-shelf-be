@@ -19,9 +19,4 @@ CREATE TABLE books (
  image_link TEXT NOT NULL DEFAULT ''
 );
 
--- CREATE TABLE book_progress(
---     progress INT CHECK (progress > 0 AND progress <= 100),
---     number_of_completions INT CHECK (number_of_completions >= 0),
--- );
-
 \d books;
