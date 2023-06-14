@@ -12,7 +12,7 @@ const getAllBooks = async (order?: ParsedQs[string]) => {
       baseQuery += "ORDER BY name ASC";
     }
   } else {
-    baseQuery += "ORDER BY id ASC";
+    baseQuery += "ORDER BY authors,id ASC";
   }
 
   try {
