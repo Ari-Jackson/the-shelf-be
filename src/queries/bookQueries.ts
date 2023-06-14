@@ -60,7 +60,7 @@ const createOneBook = async (newBookInfo: bookSchemaType) => {
 const updateOneBook = async (id: string, newBookInfo: bookSchemaType) => {
   try {
     const result = await db.one(
-      "UPDATE books SET title=$1, rating=$2, categories=$3, was_completed_before=$4, is_current_read=$5, is_favorite=$6, google_books_id=$7, authors=$8, description=$9, page_count=$10, image_link=$11, number_of_completions=$12 WHERE id=$13 RETURNING *;",
+      "UPDATE books SET title=$1, rating=$2, categories=$3, was_completed_before=$4, is_current_read=$5, is_favorite=$6, google_books_id=$7, authors=$8, description=$9, page_count=$10, image_link=$11, number_of_completions=$12, review=$13 WHERE id=$14 RETURNING *;",
       [
         newBookInfo.title,
         newBookInfo.rating,
@@ -74,8 +74,21 @@ const updateOneBook = async (id: string, newBookInfo: bookSchemaType) => {
         newBookInfo.page_count,
         newBookInfo.image_link,
         newBookInfo.number_of_completions,
+        newBookInfo.review,
         id,
       ]
+    );
+    return { result };
+  } catch (error) {
+    return { error };
+  }
+};
+
+const updateOneReview = async (id: string, newBookInfo: bookSchemaType) => {
+  try {
+    const result = await db.one(
+      "UPDATE books SET review=$1 WHERE id=$2 RETURNING *;",
+      [newBookInfo.review, id]
     );
     return { result };
   } catch (error) {
@@ -95,4 +108,11 @@ const deleteOneBook = async (id: string) => {
   }
 };
 
-export { getAllBooks, getOneBook, createOneBook, deleteOneBook, updateOneBook };
+export {
+  getAllBooks,
+  getOneBook,
+  createOneBook,
+  deleteOneBook,
+  updateOneBook,
+  updateOneReview,
+};

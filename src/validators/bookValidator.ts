@@ -15,6 +15,7 @@ const bookSchema = z.object({
   description: z.string().nullable(),
   page_count: z.number().nonnegative().nullable(),
   image_link: z.string().nullable(),
+  review: z.string().optional(),
 });
 
 const booksValidator = (req: Request, res: Response, next: NextFunction) => {

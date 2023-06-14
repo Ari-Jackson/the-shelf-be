@@ -5,8 +5,10 @@ import {
   createOneBook,
   deleteOneBook,
   updateOneBook,
+  updateOneReview,
 } from "../queries/bookQueries";
 import bookValidator from "../validators/bookValidator";
+import reviewValidator from "../validators/reviewValidator";
 
 const bookRouter = express.Router();
 
@@ -35,7 +37,7 @@ bookRouter
     const { id } = req.params;
     const { error, result } = await getOneBook(id);
     if (!!error) {
-      res.status(404).json({ error: "bookmark not found" });
+      res.status(404).json({ error: "booknot found" });
     } else {
       res.status(200).json(result);
     }
@@ -53,10 +55,20 @@ bookRouter
     const { id } = req.params;
     const { error, result } = await deleteOneBook(id);
     if (!!error) {
-      res.status(404).json("Bookmark not found");
+      res.status(404).json("Book not found");
     } else {
       res.status(201).json(result);
     }
   });
+
+bookRouter.route("/:id/review").put(reviewValidator, async (req, res) => {
+  const { id } = req.params;
+  const { error, result } = await updateOneReview(id, req.body);
+  if (!!error) {
+    res.status(404).json({ error: "Book with that id could not be found" });
+  } else {
+    res.status(200).json(result);
+  }
+});
 
 export default bookRouter;
